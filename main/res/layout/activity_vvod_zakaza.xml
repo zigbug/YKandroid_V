@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".VvodZakaza">
+
+    <TextView
+        android:id="@+id/sumZak"
+        android:layout_width="127dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="100dp"
+        android:text="Сумма"
+        android:textAlignment="viewStart"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/priceZakaz" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="113dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="44dp"
+        android:text="Сумма:"
+        android:textAlignment="viewStart"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/sumZak"
+        app:layout_constraintHorizontal_bias="0.957"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/skolkoZakaz" />
+
+    <TextView
+        android:id="@+id/zakazDate"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="66dp"
+        android:layout_marginTop="39dp"
+        android:layout_marginEnd="66dp"
+        android:layout_marginBottom="39dp"
+        android:onClick="setDate"
+        app:layout_constraintBottom_toTopOf="@+id/articlesSpinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/articlesSpinner"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/kAgentspinner"
+        app:layout_constraintEnd_toEndOf="@+id/kAgentspinner"
+        app:layout_constraintStart_toStartOf="@+id/kAgentspinner"
+        app:layout_constraintTop_toBottomOf="@+id/zakazDate" />
+
+    <EditText
+        android:id="@+id/priceZakaz"
+        android:layout_width="113dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="116dp"
+        android:hint="Цена"
+        android:inputType="numberDecimal"
+        app:layout_constraintBaseline_toBaselineOf="@+id/skolkoZakaz"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <EditText
+        android:id="@+id/skolkoZakaz"
+        android:layout_width="107dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="420dp"
+        android:hint="Кол-во"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/priceZakaz"
+        app:layout_constraintHorizontal_bias="0.906"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/kAgentspinner" />
+
+    <Button
+        android:id="@+id/saveZakaz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="Сохранить"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/commentZak" />
+
+    <Spinner
+        android:id="@+id/kAgentspinner"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="62dp"
+        android:layout_marginEnd="62dp"
+        android:layout_marginBottom="37dp"
+        app:layout_constraintBottom_toTopOf="@+id/skolkoZakaz"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/articlesSpinner" />
+
+    <EditText
+        android:id="@+id/commentZak"
+        android:layout_width="0dp"
+        android:layout_height="63dp"
+        android:layout_marginStart="63dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="63dp"
+        android:hint="Комментарий"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sumZak" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ru.def.ykandroidv00">
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".TakePhoto"></activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.android.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <service
+            android:name=".MyService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity
+            android:name=".ZalivkiClicker"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".Sebestoimost" />
+        <activity android:name=".Debitors" />
+        <activity android:name=".ZakazPodrobnosti" />
+        <activity
+            android:name=".VvodZakaza"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".VvodZatrat"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".DlFTPActivity" />
+        <activity android:name=".Zatrati" />
+        <activity android:name=".SpisokOplat" />
+        <activity android:name=".TablitsaZalivok" />
+        <activity
+            android:name=".ArticlesDialog"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CagentDialog"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ArtGoodsDialog"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Nastroiki"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".VvodZalivki"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Zalivki"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Zakazi"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

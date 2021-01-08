@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TakePhoto">
+
+
+    <ImageView
+        android:id="@+id/receiptPhoto"
+        android:layout_width="250dp"
+        android:layout_height="432dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="68dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_launcher_background"
+        tools:srcCompat="@drawable/ic_launcher_background" />
+
+    <Button
+        android:id="@+id/saveReceipt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        android:onClick="saveBtn"
+        android:text="Сохранить Чек"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/takePhotoBtn" />
+
+    <ImageView
+        android:id="@+id/takePhotoBtn"
+        android:layout_width="67dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="56dp"
+        android:background="@android:drawable/btn_default"
+        android:onClick="onClick"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/receiptPhoto"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+</androidx.constraintlayout.widget.ConstraintLayout>

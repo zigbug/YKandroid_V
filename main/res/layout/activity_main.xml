@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <Button
+        android:id="@+id/zatrati"
+        style="@style/Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="1dp"
+        android:text="@string/zatrati_bt"
+        app:layout_constraintEnd_toEndOf="@+id/zalivkiBut"
+        app:layout_constraintTop_toBottomOf="@+id/zalivkiBut" />
+
+    <Button
+        android:id="@+id/nastroiki"
+        style="@style/Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="130dp"
+        android:background="#2196F3"
+        android:text="@string/mMnu_nastroiki"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/debitorkaB" />
+
+    <Button
+        android:id="@+id/zakaziBut"
+        style="@style/Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:text="@string/zakazi_but"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Button
+        android:id="@+id/zalivkiBut"
+        style="@style/Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/zalivki_but"
+        app:layout_constraintStart_toStartOf="@+id/zakaziBut"
+        app:layout_constraintTop_toBottomOf="@+id/zakaziBut" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="35dp"
+        android:text="@string/privet"
+        app:layout_constraintStart_toStartOf="@+id/zakaziBut"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/debitorkaB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="9dp"
+        android:text="Дебиторка"
+        android:textSize="10sp"
+        app:layout_constraintStart_toStartOf="@+id/zatrati"
+        app:layout_constraintTop_toBottomOf="@+id/zatrati" />
+
+    <Button
+        android:id="@+id/sebestoimostB"
+        style="@android:style/Widget.DeviceDefault.Light.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Себестоимость"
+        android:textSize="9sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/debitorkaB" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

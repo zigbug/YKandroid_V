@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ZalivkiClicker">
+
+    <Button
+        android:id="@+id/clickerButton"
+        android:layout_width="83dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginBottom="38dp"
+        android:text="клац"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar2" />
+
+    <TextView
+        android:id="@+id/textView23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="54dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginBottom="558dp"
+        android:text="номер заливки"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar2"
+        app:layout_constraintEnd_toStartOf="@+id/numZalivki"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/numZalivki"
+        android:layout_width="0dp"
+        android:layout_height="27dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="156dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView23"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView28"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="11dp"
+        android:text="налито:"
+        app:layout_constraintStart_toEndOf="@+id/textView23"
+        app:layout_constraintTop_toBottomOf="@+id/numZalivki" />
+
+    <TextView
+        android:id="@+id/uzeNalito"
+        android:layout_width="314dp"
+        android:layout_height="195dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginBottom="68dp"
+        app:layout_constraintBottom_toBottomOf="@+id/spinnerStol1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/numZalivki" />
+
+    <EditText
+        android:id="@+id/kolformSt4"
+        android:layout_width="0dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="102dp"
+        android:layout_marginEnd="73dp"
+        android:layout_marginBottom="102dp"
+        android:inputType="numberSigned"
+        android:text="0"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/clickerButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/spinnerStol4"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerStol2" />
+
+    <Spinner
+        android:id="@+id/spinnerStol1"
+        android:layout_width="197dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView33"
+        app:layout_constraintEnd_toStartOf="@+id/kolformSt1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView30" />
+
+    <Spinner
+        android:id="@+id/spinnerStol4"
+        android:layout_width="195dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="61dp"
+        android:layout_marginBottom="44dp"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar2"
+        app:layout_constraintEnd_toStartOf="@+id/kolformSt4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerStol3" />
+
+    <TextView
+        android:id="@+id/textView38"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="27dp"
+        android:layout_marginBottom="9dp"
+        android:text="Стол4"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerStol4"
+        app:layout_constraintStart_toStartOf="@+id/spinnerStol4" />
+
+    <EditText
+        android:id="@+id/kolformSt2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="76dp"
+        android:inputType="numberSigned"
+        android:text="0"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView34"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/spinnerStol2"
+        app:layout_constraintTop_toTopOf="@+id/spinnerStol2" />
+
+    <TextView
+        android:id="@+id/textView34"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="43dp"
+        android:text="Стол3"
+        app:layout_constraintStart_toStartOf="@+id/spinnerStol2"
+        app:layout_constraintTop_toBottomOf="@+id/textView33" />
+
+    <Spinner
+        android:id="@+id/spinnerStol2"
+        android:layout_width="193dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="27dp"
+        android:layout_marginEnd="57dp"
+        android:layout_marginBottom="29dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView34"
+        app:layout_constraintEnd_toStartOf="@+id/kolformSt2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView33" />
+
+    <EditText
+        android:id="@+id/kolformSt3"
+        android:layout_width="0dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="67dp"
+        android:layout_marginEnd="78dp"
+        android:layout_marginBottom="65dp"
+        android:inputType="numberSigned"
+        android:text="0"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/kolformSt4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/spinnerStol3"
+        app:layout_constraintTop_toTopOf="@+id/kolformSt2" />
+
+    <TextView
+        android:id="@+id/textView33"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="43dp"
+        android:text="Стол2"
+        app:layout_constraintStart_toStartOf="@+id/spinnerStol2"
+        app:layout_constraintTop_toBottomOf="@+id/textView30" />
+
+    <TextView
+        android:id="@+id/textView31"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="10dp"
+        android:text="к-во форм"
+        app:layout_constraintBottom_toTopOf="@+id/kolformSt1"
+        app:layout_constraintEnd_toEndOf="@+id/uzeNalito" />
+
+    <EditText
+        android:id="@+id/kolformSt1"
+        android:layout_width="59dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="76dp"
+        android:layout_marginBottom="24dp"
+        android:inputType="numberSigned"
+        android:text="0"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/kolformSt2"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textView30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="296dp"
+        android:text="Стол1"
+        app:layout_constraintStart_toStartOf="@+id/spinnerStol1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinnerStol3"
+        android:layout_width="197dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="61dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/kolformSt3"
+        app:layout_constraintEnd_toStartOf="@+id/kolformSt3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView34" />
+
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="249dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="98dp"
+        android:max="1200"
+        android:progress="0"
+        android:progressTint="#00BCD4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView23" />
+
+    <TextView
+        android:id="@+id/minutesTV"
+        android:layout_width="70dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="103dp"
+        android:layout_marginBottom="102dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/progressBar2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/kolformSt3" />
+</androidx.constraintlayout.widget.ConstraintLayout>

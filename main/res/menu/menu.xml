@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/zakM"
+        android:title="Заказы" />
+    <item
+        android:id="@+id/zalM"
+        android:title="Заливки" />
+    <item
+        android:id="@+id/zatM"
+        android:title="Затраты" />
+    <item
+        android:id="@+id/m_menu"
+        android:title="Главное меню" />
+</menu>

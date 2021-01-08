@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Ярославскiй Камѣнщикъ V0.9</string>
+    <string name="privet">Ну, привет!</string>
+    <string name="zakazi_but">Заказы</string>
+    <string name="zalivki_but">Заливки</string>
+    <string name="podskazka">Выбери имя</string>
+    <string name="datezal">\ Дата заливки : </string>
+    <string name="zakazy">Активити заказов</string>
+    <string name="select_date">Выбери дату заливки</string>
+    <string name="select_name">Ввести заливки</string>
+    <string name="but_change_articles">Добавить/Удалить артикулы</string>
+    <string name="save_btn">Сохранить</string>
+    <string name="cancael_btn">Отменить</string>
+    <string name="mMnu_nastroiki">Настройки</string>
+    <string name="zatrati_bt">Затраты</string>
+
+    <string-array name="bablosourse">
+        <item>Выбери источник бабла</item>
+        <item>Казна</item>
+        <item>Халва</item>
+        <item>Денис</item>
+        <item>Альфа</item>
+    </string-array>
+</resources>
