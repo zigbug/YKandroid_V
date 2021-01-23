@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +17,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.util.Date;
 
 import static android.widget.Toast.LENGTH_LONG;
@@ -31,15 +33,18 @@ public class VvodZalivki extends AppCompatActivity implements View.OnClickListen
     String text;
     private RelativeLayout layout;
     int textId;
-
+    String [] nal;
+    String [][]nalito;
     private static final String FILE_NAME_ARTICLES = "articles.def";
     private static final String FILE_NAME_BASE = "base.txt";
-
+    private int [] in_m={60,60,64,67,48,60,36};
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
 
         FileInputStream fis = null;
 
@@ -77,6 +82,50 @@ public class VvodZalivki extends AppCompatActivity implements View.OnClickListen
 
         int a = 0;
         final RelativeLayout layout = new RelativeLayout(this);
+        Intent intent=getIntent();
+        text=intent.getStringExtra("time") + " " + intent.getStringExtra("zalivshik");
+        System.out.println("time zal"+text);
+        if (intent.getStringExtra("nalito")!=null)
+        nal=intent.getStringExtra("nalito").split("\n");
+        for (int i = 0; i <nal.length ; i++) {
+            System.out.println(nal[i]);
+        }
+
+        if (nal!=null){
+            System.out.println("ну да не нулл");
+            nalito=new String[nal.length][];
+            for (int i = 0; i <nal.length ; i++) {
+                nalito[i]=nal[i].split(" ");
+            }
+            for (int i = 0; i <nalito.length ; i++) {
+                for (int j = 0; j <nalito[1].length ; j++) {
+                    System.out.println(nalito[i][j]);
+                }
+            }
+
+            for (int i = 0; i <textVmin.length ; i++) {
+                if (i>=0   &&  i<=2){ //считаем фигурку
+                    textVmin[i]=String.valueOf(Math.round((Double.parseDouble(nalito[i+1][1])/30)));///bjkbjbkjjk
+                    System.out.println("textV"+textVmin[i]);
+                } else if (i==3){// сланец тонкослойный
+                    textVmin[i]= String.valueOf(Double.parseDouble(nalito[i+1][1])/30 +
+                            Double.parseDouble(nalito[i+2][1])/40);
+                }
+                else if (i==4){// ст жёлтый
+                    textVmin[i]=String.valueOf(Double.parseDouble(nalito[i+2][1])/30 +
+                            Double.parseDouble(nalito[i+3][1])/40) ;
+                }
+                else if (i==5){//ст коричневый
+                    textVmin[i]=String.valueOf(Double.parseDouble(nalito[i+3][1])+
+                            Double.parseDouble(nalito[i+4][1])/40) ;
+                }
+                else if (i>5){
+                    if (i+4<nalito.length){
+                        textVmin[i]=String.valueOf(Double.parseDouble(nalito[i+4][1])/in_m[i-6]);
+                    }else textVmin[i]="0";
+                }
+            }
+        }
 
         buttonsArray = new Button[len];
         textViewsArray = new TextView[len];
@@ -96,8 +145,8 @@ public class VvodZalivki extends AppCompatActivity implements View.OnClickListen
         par.addRule(RelativeLayout.CENTER_VERTICAL);
         savebut.setId(a + 100);
 
-        Intent intent=getIntent();
-        text=intent.getStringExtra("time") + " " + intent.getStringExtra("zalivshik");
+
+
         savebut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

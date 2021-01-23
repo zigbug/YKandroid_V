@@ -4,13 +4,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.RingtoneManager;
 import android.media.SoundPool;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,6 +50,7 @@ import java.util.TimerTask;
 
 public class ZalivkiClicker extends AppCompatActivity {
 
+    final String LOG_TAG = "myLogs";
     // Идентификатор уведомления
     private static final int NOTIFY_ID = 101;
 
@@ -48,6 +60,9 @@ public class ZalivkiClicker extends AppCompatActivity {
     TextView numZal;
     TextView uzeNal;
     TextView minutes;
+
+    Timer time;
+    TimerTask timerTask;
 
     ProgressBar pb;
     EditText kolvoformSt1;
@@ -62,6 +77,7 @@ public class ZalivkiClicker extends AppCompatActivity {
 
 
     Button klatz;
+    Button saveZalivki;
     private int num=0;
     private String nalito;
     private int stol1;
@@ -73,7 +89,6 @@ public class ZalivkiClicker extends AppCompatActivity {
     private int formiNaStole3;
     private int formiNaStole4;
     private int a=0;
-    private Timer mTimer;
     private int progress;
     private String selFormNameSt1;
     private String selFormNameSt2;
@@ -86,14 +101,28 @@ public class ZalivkiClicker extends AppCompatActivity {
 
     private static final String FILE_ZALTMP = "zal_tmp.def";
 
-    MediaPlayer mPlayer;
+    Intent intentservice;
     private String nalitoF;
     private String stArr;
+    ServiceConnection sConn;
+    MyService myService;
+    boolean bound   =  false;
 
+    private Thread myThread;
+    private Handler myHandler;
+    private int treadnum=0;
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+            @Override
     protected void onRestart() {
         super.onRestart();
+    setPb();
+
     }
 
     @Override
@@ -101,7 +130,9 @@ public class ZalivkiClicker extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_zalivki_clicker);
 
-      String [] nazvanirform= {"Не выбрано","Сланец Фигурный","Сланец Фигурный Жёлтый","Сланец Фигурный Коричневый",
+        intentservice=new Intent(ZalivkiClicker.this, MyService.class);
+
+        String [] nazvanirform= {"Не выбрано","Сланец Фигурный","Сланец Фигурный Жёлтый","Сланец Фигурный Коричневый",
               "Сланец Тонкослойный длиные","Сланец Тонкослойный короткие",
                 "Сланец Тонкослойный Жёлтый длиные", "Сланец Тонкослойный Жёлтый короткие",
               "Сланец Тонкослойный Коричневый длиные","Сланец Тонкослойный Коричневый короткие",
@@ -125,20 +156,23 @@ public class ZalivkiClicker extends AppCompatActivity {
 
 
         klatz= findViewById(R.id.clickerButton);
-zalivkiArr=new String[nazvanirform.length-1][2];
+        saveZalivki= findViewById(R.id.saveZal);
+
+    zalivkiArr=new String[nazvanirform.length-1][2];
         for (int i = 0; i <zalivkiArr.length ; i++) {
             zalivkiArr[i][0]=
-                    nazvanirform[i+1];
+                    nazvanirform[i+1].replace(" ","_");
             zalivkiArr[i][1]="0";
         }
-        Date currentDate = new Date();
 
+        Date currentDate = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
         dateText = dateFormat.format(currentDate);
 
         mas2dfromfile(FILE_ZALTMP);
-if (zalivki2d.length>0){
-    if (!zalivki2d[0][0].equals(dateText)){
+        numZal.setText("0");
+    if (zalivki2d!=null && zalivki2d.length>0){
+    if (!zalivki2d[0][0].equals(dateText)){ //Очищаем tmp файл на новый день
         FileOutputStream fos3 = null;
         try {
             fos3 = openFileOutput(FILE_ZALTMP,0);
@@ -155,29 +189,55 @@ if (zalivki2d.length>0){
         } catch (IOException e) {
             e.printStackTrace();
         }
+        numZal.setText("0");
     }
-    else {
-        num=Integer.parseInt(zalivki2d[0][1]);
+    else { // если продолжаем заливки того же дня
+
+
         for (int i = 1; i <zalivki2d.length ; i++) {
             zalivkiArr[i-1][0]=zalivki2d[i][0];
             zalivkiArr[i-1][1]=zalivki2d[i][1];
         }
-        numZal.setText(String.valueOf(num));
+        numZal.setText(zalivki2d[0][1]); // номер заливки
+
+        // подготовка к выводу на экран залитого
         StringBuilder sb= new StringBuilder();
         for (int i = 0; i <zalivkiArr.length ; i++) {
             if(!zalivkiArr[i][1].equals("0")){
-                sb.append(zalivkiArr[i][0]).append(" ").append(zalivkiArr[i][1]).append("\n");
+                sb.append(zalivkiArr[i][0].replace("_"," ")).append(" ").append(zalivkiArr[i][1]).append("\n");
                 System.out.println("sb "+sb);
             }
 
         }
+        //выводим на экран
         nalito=sb.toString();
         uzeNal.setText(nalito);
+        }
     }
 
-}
+//        myHandler = new Handler() {
+//            @Override
+//            public void handleMessage(Message msg) {
+//                pb.setProgress(msg.what);
+//                minutes.setText(String.valueOf(msg.what / 60) + "мин");
+//                progress=msg.what;
+//            }
+//        };
 
-
+//        sConn=new ServiceConnection() {
+//            @Override
+//            public void onServiceConnected(ComponentName componentName, IBinder binder) {
+//                myService = ((MyService.MyBinder) binder).getService();
+//                System.out.println("Connected to servise");
+//                bound = true;
+//            }
+//
+//            @Override
+//            public void onServiceDisconnected(ComponentName componentName) {
+//                Log.d(LOG_TAG, "MainActivity onServiceDisconnected");
+//                bound = false;
+//            }
+//        };
 
         ArrayAdapter arrayAdapterSt1= new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item, nazvanirform);
         arrayAdapterSt1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -221,22 +281,37 @@ if (zalivki2d.length>0){
             }
         };
 
-        sp1.setAdapter(arrayAdapterSt1);
-    sp1.setOnItemSelectedListener(itemSelectedListener1);
-    sp2.setAdapter(arrayAdapterSt1);
-    sp2.setOnItemSelectedListener(itemSelectedListener2);
-    sp3.setAdapter(arrayAdapterSt1);
-    sp3.setOnItemSelectedListener(itemSelectedListener3);
-    sp4.setAdapter(arrayAdapterSt1);
-    sp4.setOnItemSelectedListener(itemSelectedListener4);
 
-    pb.setProgress(progress);
-    minutes.setText(String.valueOf((int)progress/60)+"мин");
+        sp1.setAdapter(arrayAdapterSt1);
+        sp1.setOnItemSelectedListener(itemSelectedListener1);
+        sp2.setAdapter(arrayAdapterSt1);
+        sp2.setOnItemSelectedListener(itemSelectedListener2);
+        sp3.setAdapter(arrayAdapterSt1);
+        sp3.setOnItemSelectedListener(itemSelectedListener3);
+        sp4.setAdapter(arrayAdapterSt1);
+        sp4.setOnItemSelectedListener(itemSelectedListener4);
+
+   // pb.setProgress(progress);
+
     klatz.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            startService(new Intent(ZalivkiClicker.this, MyService.class));
+            //PendingIntent pi;
+//            Intent intentservice=new Intent(ZalivkiClicker.this, MyService.class);
+           // pi=createPendingResult(tackCode,)
+            klatz.setVisibility(View.INVISIBLE);
+            setPb();
+//            startService(intentservice);
+//            bindService(intentservice, sConn, 0);
+
+
+//            if (!bound) return;
+//            pb.setProgress(myService.progressRet());
+
+
             setTVnumzal();
+            stArr="";
+
             for (int i = 0; i <zalivkiArr.length ; i++) {
                 stArr+=zalivkiArr[i][0]+" "+zalivkiArr[i][1] + "\n";
             }
@@ -263,36 +338,146 @@ if (zalivki2d.length>0){
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Intent notificationIntent = new Intent(ZalivkiClicker.this, ZalivkiClicker.class);
-            PendingIntent contentIntent = PendingIntent.getActivity(ZalivkiClicker.this,
-                    0, notificationIntent,
-                    PendingIntent.FLAG_CANCEL_CURRENT);
+            sendNotification("Ждёмс", progress);
 
-            NotificationCompat.Builder builder =
-                    new NotificationCompat.Builder(ZalivkiClicker.this, CHANNEL_ID)
-                            .setSmallIcon(R.drawable.ic_launcher_foreground)
-                            .setContentTitle("Напоминание")
-                            .setContentText("Таймер работает")
-                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                            .setProgress(100,progress,false)
-                            .setContentIntent(contentIntent);
-
-            NotificationManagerCompat notificationManager =
-                    NotificationManagerCompat.from(ZalivkiClicker.this);
-            notificationManager.notify(NOTIFY_ID, builder.build());
 
         }
     });
 
+    saveZalivki.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            int time= (int) (new Date().getTime()/1000);
+            System.out.println("time"+ time);
+            Intent saveint= new Intent(getApplicationContext(), VvodZalivki.class);
+            stArr="tmp 0 \n";
+
+            for (int i = 0; i <zalivkiArr.length ; i++) {
+                stArr+=zalivkiArr[i][0]+" "+zalivkiArr[i][1] + "\n";
+            }
+
+            saveint.putExtra("nalito", stArr);
+            saveint.putExtra("time", String.valueOf(time));
+            saveint.putExtra("zalivshik", "Оба");
+        startActivity(saveint);
+        }
+    });
+
+    }
+public void setPb() {
+
+    sConn=new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder binder) {
+            myService = ((MyService.MyBinder) binder).getService();
+            System.out.println("Connected to servise");
+            bound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            Log.d(LOG_TAG, "MainActivity onServiceDisconnected");
+            bound = false;
+        }
+    };
+
+    myThread = new Thread(new Runnable() {
+
+        @Override
+        public void run() {
+            while (MyService.progressRet() < 1200) {
+                System.out.println("mySwhile ok in thread"+myThread.getName());
+                try {
+                    myHandler.sendEmptyMessage(MyService.progressRet());
+                    Thread.sleep(1000);
+                } catch (Throwable t) {
+                }
+            }
+//            if (myService.timerstop()==true) {
+                myHandler.sendEmptyMessage(1200);
+//            }
+        }
+    });
+
+    myHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                pb.setProgress(msg.what);
+                minutes.setText(String.valueOf(msg.what / 60) + "мин");
+                progress=msg.what;
+                if (progress>=1200){
+                klatz.setVisibility(View.VISIBLE);
+                }
+                sendNotification("Осталось"+ String.valueOf(20-(msg.what / 60)) + "минут", progress);
+            }
+        };
+
+myThread.start();
+    startService(intentservice);
+    bindService(intentservice, sConn, 0);
     }
 
+
+    private void sendNotification(String messageBody, int prog) {
+
+        NotificationManager notificationManager
+                = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // create channel in new versions of android
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, "CHANNEL_YK", importance);
+            notificationChannel.enableLights(true);
+            notificationChannel.setSound(null,null);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.enableVibration(false);
+//            notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+
+
+        // show notification
+        Intent intent = new Intent(this, ZalivkiClicker.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        // 0 is request code FLAG_ACTIVITY_CLEAR_TOP
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);//FLAG_ONE_SHOT
+
+        //Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, CHANNEL_ID)
+                        .setSmallIcon(R.drawable.ic_launcher_foreground)
+                        .setContentTitle(getString(R.string.app_name))
+                        .setContentText(messageBody)
+                        .setAutoCancel(true)
+                        .setSound(null)
+
+                        .setProgress(1200, prog, false)
+
+                        .setContentIntent(pendingIntent);
+
+
+        // 0 is id of notification
+        notificationManager.notify(NOTIFY_ID, notificationBuilder.build()
+        );
+
+    }
+
+private String nulToNol(TextView tv){
+    String stNum;
+    stNum=tv.getText().toString();
+    if(stNum.equals("null")||stNum.equals("")){
+        stNum="0";
+    }
+
+    return stNum;
+}
     private void setTVnumzal() {
-    num++;
-    numZal.setText(String.valueOf(num));
-    formiNaStole1=Integer.parseInt(String.valueOf(kolvoformSt1.getText()));
-    formiNaStole2=Integer.parseInt(String.valueOf(kolvoformSt2.getText()));
-    formiNaStole3=Integer.parseInt(String.valueOf(kolvoformSt3.getText()));
-    formiNaStole4=Integer.parseInt(String.valueOf(kolvoformSt4.getText()));
+        num=Integer.parseInt(numZal.getText().toString());
+    numZal.setText(String.valueOf(++num));
+    formiNaStole1=Integer.parseInt(nulToNol(kolvoformSt1));
+    formiNaStole2=Integer.parseInt(nulToNol(kolvoformSt2));
+    formiNaStole3=Integer.parseInt(nulToNol(kolvoformSt3));
+    formiNaStole4=Integer.parseInt(nulToNol(kolvoformSt4));
     stol1 = formiNaStole1;
     stol2 = formiNaStole2;
     stol3 = formiNaStole3;
@@ -313,33 +498,6 @@ StringBuilder sb= new StringBuilder();
         }
         nalito=sb.toString();
         uzeNal.setText(nalito);
-//
-//progress=0;
-//        mTimer = new Timer();
-//            mTimer.schedule(new TimerTask() {
-//                @Override
-//                public void run() {
-//
-//                progress++;
-//                System.out.println("prog"+progress);
-//                pb.setProgress(progress);
-//                minutes.setText(String.valueOf((int)progress/60)+"мин");
-//
-//            if(progress==1200) { mTimer.cancel();
-//                mPlayer=MediaPlayer.create(getApplicationContext(), R.raw.horn);
-//            mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-//                @Override
-//                public void onCompletion(MediaPlayer mediaPlayer) {
-//                    mediaPlayer.stop();
-//                }
-//            });
-//            mPlayer.start();
-//            }
-//
-//                }
-//            },0 ,1000);
-
-
     }
 
     private void changeArrZalivok(String selFormNameSt, int stol) {
@@ -425,3 +583,22 @@ StringBuilder sb= new StringBuilder();
     }
 
 }
+
+//    public void setPb() {
+//    timerTask = new TimerTask() {
+//        @Override
+//        public void run() {
+//            if (!bound) return;
+//            if (myService.progressRet() < 1200) {
+//                pb.setProgress(myService.progressRet());
+//                minutes.setText(String.valueOf(myService.progressRet() / 60) + "мин");
+//            } else {
+//                time.cancel();
+//                System.out.println("time canceled");
+//            }
+//        }
+//    };
+
+        //System.out.println("time cancelled because of restart");
+        //time=new Timer();
+//    time.schedule(timerTask, 0, 100);}
