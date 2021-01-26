@@ -115,14 +115,17 @@ public class ZalivkiClicker extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
+        presetPb();
+        if (myThread!=null)
+        System.out.println("onResume"+ myThread.getName());
 
     }
 
             @Override
     protected void onRestart() {
         super.onRestart();
-    setPb();
-
+    presetPb(); //setPb();
+                System.out.println("onRestart "+myThread.getName());
     }
 
     @Override
@@ -300,6 +303,7 @@ public class ZalivkiClicker extends AppCompatActivity {
 //            Intent intentservice=new Intent(ZalivkiClicker.this, MyService.class);
            // pi=createPendingResult(tackCode,)
             klatz.setVisibility(View.INVISIBLE);
+            presetPb();
             setPb();
 //            startService(intentservice);
 //            bindService(intentservice, sConn, 0);
@@ -364,22 +368,54 @@ public class ZalivkiClicker extends AppCompatActivity {
     });
 
     }
+
+    public  void presetPb(){
+        sConn=new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName componentName, IBinder binder) {
+                myService = ((MyService.MyBinder) binder).getService();
+                System.out.println("Connected to servise");
+                bound = true;
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName componentName) {
+                Log.d(LOG_TAG, "MainActivity onServiceDisconnected");
+                bound = false;
+            }
+        };
+
+        myHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                pb.setProgress(msg.what);
+                minutes.setText(String.valueOf(msg.what / 60) + "мин");
+                progress=msg.what;
+                if (progress>=1200){
+                    klatz.setVisibility(View.VISIBLE);
+                } else klatz.setVisibility(View.INVISIBLE);
+                sendNotification("Осталось"+ String.valueOf(20-(msg.what / 60)) + "минут", progress);
+            }
+        };
+        bindService(intentservice, sConn, 0);
+
+    }
 public void setPb() {
 
-    sConn=new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder binder) {
-            myService = ((MyService.MyBinder) binder).getService();
-            System.out.println("Connected to servise");
-            bound = true;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-            Log.d(LOG_TAG, "MainActivity onServiceDisconnected");
-            bound = false;
-        }
-    };
+//    sConn=new ServiceConnection() {
+//        @Override
+//        public void onServiceConnected(ComponentName componentName, IBinder binder) {
+//            myService = ((MyService.MyBinder) binder).getService();
+//            System.out.println("Connected to servise");
+//            bound = true;
+//        }
+//
+//        @Override
+//        public void onServiceDisconnected(ComponentName componentName) {
+//            Log.d(LOG_TAG, "MainActivity onServiceDisconnected");
+//            bound = false;
+//        }
+//    };
 
     myThread = new Thread(new Runnable() {
 
@@ -399,22 +435,22 @@ public void setPb() {
         }
     });
 
-    myHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                pb.setProgress(msg.what);
-                minutes.setText(String.valueOf(msg.what / 60) + "мин");
-                progress=msg.what;
-                if (progress>=1200){
-                klatz.setVisibility(View.VISIBLE);
-                }
-                sendNotification("Осталось"+ String.valueOf(20-(msg.what / 60)) + "минут", progress);
-            }
-        };
+//    myHandler = new Handler() {
+//            @Override
+//            public void handleMessage(Message msg) {
+//                pb.setProgress(msg.what);
+//                minutes.setText(String.valueOf(msg.what / 60) + "мин");
+//                progress=msg.what;
+//                if (progress>=1200){
+//                klatz.setVisibility(View.VISIBLE);
+//                }
+//                sendNotification("Осталось"+ String.valueOf(20-(msg.what / 60)) + "минут", progress);
+//            }
+//        };
 
 myThread.start();
     startService(intentservice);
-    bindService(intentservice, sConn, 0);
+//    bindService(intentservice, sConn, 0);
     }
 
 

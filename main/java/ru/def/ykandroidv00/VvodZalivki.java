@@ -105,23 +105,27 @@ public class VvodZalivki extends AppCompatActivity implements View.OnClickListen
 
             for (int i = 0; i <textVmin.length ; i++) {
                 if (i>=0   &&  i<=2){ //считаем фигурку
-                    textVmin[i]=String.valueOf(Math.round((Double.parseDouble(nalito[i+1][1])/30)));///bjkbjbkjjk
+                    textVmin[i]=String.format("%.2f",(Double.parseDouble(nalito[i+1][1])/30));///bjkbjbkjjk
                     System.out.println("textV"+textVmin[i]);
                 } else if (i==3){// сланец тонкослойный
-                    textVmin[i]= String.valueOf(Double.parseDouble(nalito[i+1][1])/30 +
-                            Double.parseDouble(nalito[i+2][1])/40);
+                    textVmin[i]= String.format("%.2f",( Double.parseDouble(nalito[i+1][1])/30 +
+                            Double.parseDouble(nalito[i+2][1])/40));
+                    System.out.println("textV"+textVmin[i]);
                 }
                 else if (i==4){// ст жёлтый
-                    textVmin[i]=String.valueOf(Double.parseDouble(nalito[i+2][1])/30 +
-                            Double.parseDouble(nalito[i+3][1])/40) ;
+                    textVmin[i]=String.format("%.2f", (Double.parseDouble(nalito[i+2][1])/30 +
+                            Double.parseDouble(nalito[i+3][1])/40) );
+                    System.out.println("textV"+textVmin[i]);
                 }
                 else if (i==5){//ст коричневый
-                    textVmin[i]=String.valueOf(Double.parseDouble(nalito[i+3][1])+
-                            Double.parseDouble(nalito[i+4][1])/40) ;
+                    textVmin[i]=String.format("%.2f", (Double.parseDouble(nalito[i+3][1])/30+
+                            Double.parseDouble(nalito[i+4][1])/40)) ;
+                    System.out.println("textV "+textVmin[i]);
                 }
                 else if (i>5){
                     if (i+4<nalito.length){
-                        textVmin[i]=String.valueOf(Double.parseDouble(nalito[i+4][1])/in_m[i-6]);
+                        textVmin[i]=String.format("%.2f",Double.parseDouble(nalito[i+4][1])/in_m[i-6]);
+                        System.out.println("textV"+textVmin[i]);
                     }else textVmin[i]="0";
                 }
             }
