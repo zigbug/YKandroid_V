@@ -302,6 +302,7 @@ public class ZalivkiClicker extends AppCompatActivity {
             //PendingIntent pi;
 //            Intent intentservice=new Intent(ZalivkiClicker.this, MyService.class);
            // pi=createPendingResult(tackCode,)
+            pb.setProgress(0);
             klatz.setVisibility(View.INVISIBLE);
             presetPb();
             setPb();
